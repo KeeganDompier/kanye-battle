@@ -1,3 +1,6 @@
+namespace SpriteKind {
+    export const Kanye = SpriteKind.create()
+}
 namespace myTiles {
     //% blockIdentity=images._tile
     export const tile0 = img`
@@ -171,25 +174,9 @@ f f d d d d d d d d d d d d f f
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
 }
-function Tilemap () {
-    tiles.setTilemap(tiles.createTilemap(
-            hex`0a0008000401010101010101010603070707070707070703030707070707070707030501010101080707070307070707070707070703070707070707070707030707070707070707070301010101010101010102`,
-            img`
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-. . . . . . . . . . 
-`,
-            [myTiles.tile0,myTiles.tile1,myTiles.tile2,myTiles.tile3,myTiles.tile4,myTiles.tile5,myTiles.tile6,myTiles.tile7,myTiles.tile8],
-            TileScale.Sixteen
-        ))
-}
-function Rapper () {
-    Rapper2 = sprites.create(img`
+function Rapper1 () {
+    // Creates a sprite
+    Rapper = sprites.create(img`
 . . . . . e e e e e e . . . . . 
 . . . . . e f e e f e . . . . . 
 . . . . . e e e e e e . . . . . 
@@ -207,22 +194,126 @@ function Rapper () {
 . . . . . . f . . f . . . . . . 
 . . . . . f f . . f f . . . . . 
 `, SpriteKind.Player)
-    controller.moveSprite(Rapper2)
-    Rapper2.setPosition(10, 119)
+    // Sets player movement and speed
+    controller.moveSprite(Rapper)
+    // sets players starting poition
+    Rapper.setPosition(50, 120)
+    Rapper.say("I wanna rap battle Kanye", 2000)
+    info.setLife(1)
+}
+function Tilemap () {
+    // Sets tilemap function to the tilemap
+    tiles.setTilemap(tiles.createTilemap(
+            hex`0a0008000401010101010101010603070707070707070703030707070707070707030501010101080707070307070707070707070703070707070707070707030707070707070707070301010101010101010102`,
+            img`
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+. . . . . . . . . . 
+`,
+            [myTiles.tile0,myTiles.tile1,myTiles.tile2,myTiles.tile3,myTiles.tile4,myTiles.tile5,myTiles.tile6,myTiles.tile7,myTiles.tile8],
+            TileScale.Sixteen
+        ))
+}
+function music2 () {
+    music.playMelody("D C E D G C D C ", 350)
+}
+function Kanye2 () {
+    kanye = sprites.create(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . e e e e . . . . . . 
+. . . . . e e e e e e . . . . . 
+. . . . . e f e e f e . . . . . 
+. . . . . e e e e e e . . . . . 
+. . . . . e e f f e e . . . . . 
+. . . . . . e e e e . . . . . . 
+. . . e 1 5 e e e e 5 1 e . . . 
+. . . e 1 1 5 1 1 5 1 1 e . . . 
+. . . e . 1 1 5 5 1 1 . e . . . 
+. . . e . 1 1 1 1 1 1 . e . . . 
+. . . e . 1 1 1 1 1 1 . e . . . 
+. . . . . 1 1 1 1 1 1 . . . . . 
+. . . . . 1 . . . . 1 . . . . . 
+. . . . 1 1 . . . . 1 1 . . . . 
+. . . . 1 1 . . . . 1 1 . . . . 
+`, SpriteKind.Player)
+    kanye.setPosition(90, 55)
+    kanye.setKind(SpriteKind.Kanye)
+}
+sprites.onOverlap(SpriteKind.Kanye, SpriteKind.Player, function (sprite, otherSprite) {
+    Interact()
+})
+function lose () {
+    if (info.life() == 0) {
+        game.over(false)
+    }
+}
+function Interact () {
+    // Makes hero says something
+    Rapper.say("I'll let you go first", 2000)
+    pause(2000)
+    kanye.say("Wrong choice", 2000)
+    pause(2000)
+    kanye.say("Poopity scoop", 2000)
+    pause(2000)
+    info.changeLifeBy(-1)
 }
 function walls () {
+    // adds wall
     tiles.setWallAt(tiles.getTileLocation(3, 2), true)
     tiles.setWallAt(tiles.getTileLocation(4, 2), true)
     tiles.setWallAt(tiles.getTileLocation(2, 2), true)
     tiles.setWallAt(tiles.getTileLocation(4, 4), true)
     tiles.setWallAt(tiles.getTileLocation(4, 5), true)
     tiles.setWallAt(tiles.getTileLocation(4, 6), true)
-    tiles.setWallAt(tiles.getTileLocation(4, 0), true)
+    tiles.setWallAt(tiles.getTileLocation(4, 1), true)
     tiles.setWallAt(tiles.getTileLocation(1, 2), true)
     tiles.setWallAt(tiles.getTileLocation(2, 1), true)
     tiles.setWallAt(tiles.getTileLocation(1, 1), true)
+    tiles.setWallAt(tiles.getTileLocation(5, 2), true)
+    tiles.setWallAt(tiles.getTileLocation(6, 2), true)
+    tiles.setWallAt(tiles.getTileLocation(7, 2), true)
+    tiles.setWallAt(tiles.getTileLocation(8, 2), true)
+    tiles.setWallAt(tiles.getTileLocation(3, 1), true)
+    tiles.setWallAt(tiles.getTileLocation(4, 1), true)
+    tiles.setWallAt(tiles.getTileLocation(5, 1), true)
+    tiles.setWallAt(tiles.getTileLocation(6, 1), true)
+    tiles.setWallAt(tiles.getTileLocation(7, 1), true)
+    tiles.setWallAt(tiles.getTileLocation(8, 1), true)
+    tiles.setWallAt(tiles.getTileLocation(6, 3), true)
+    tiles.setWallAt(tiles.getTileLocation(6, 4), true)
+    tiles.setWallAt(tiles.getTileLocation(6, 5), true)
+    tiles.setWallAt(tiles.getTileLocation(6, 6), true)
+    tiles.setWallAt(tiles.getTileLocation(1, 6), true)
+    tiles.setWallAt(tiles.getTileLocation(0, 6), true)
+    tiles.setWallAt(tiles.getTileLocation(2, 6), true)
+    tiles.setWallAt(tiles.getTileLocation(3, 6), true)
+    tiles.setWallAt(tiles.getTileLocation(4, 6), true)
+    tiles.setWallAt(tiles.getTileLocation(5, 6), true)
+    tiles.setWallAt(tiles.getTileLocation(7, 6), true)
+    tiles.setWallAt(tiles.getTileLocation(8, 6), true)
+    tiles.setWallAt(tiles.getTileLocation(8, 5), true)
+    tiles.setWallAt(tiles.getTileLocation(8, 4), true)
+    tiles.setWallAt(tiles.getTileLocation(8, 3), true)
+    tiles.setWallAt(tiles.getTileLocation(0, 4), true)
+    tiles.setWallAt(tiles.getTileLocation(1, 4), true)
+    tiles.setWallAt(tiles.getTileLocation(2, 4), true)
+    tiles.setWallAt(tiles.getTileLocation(3, 4), true)
+    tiles.setWallAt(tiles.getTileLocation(4, 4), true)
+    tiles.setWallAt(tiles.getTileLocation(5, 4), true)
 }
-let Rapper2: Sprite = null
+function banana () {
+	
+}
+let kanye: Sprite = null
+let Rapper: Sprite = null
 Tilemap()
-Rapper()
 walls()
+Rapper1()
+forever(function () {
+    music2()
+})
