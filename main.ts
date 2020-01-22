@@ -174,6 +174,7 @@ f f d d d d d d d d d d d d f f
 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 7 
 `
 }
+// creates a function
 function Rapper1 () {
     // Creates a sprite
     Rapper = sprites.create(img`
@@ -199,7 +200,10 @@ function Rapper1 () {
     // sets players starting poition
     Rapper.setPosition(50, 120)
     Rapper.say("I wanna rap battle Kanye", 2000)
+    // Sets life
     info.setLife(1)
+    // sets score
+    info.setScore(0)
 }
 function Tilemap () {
     // Sets tilemap function to the tilemap
@@ -219,8 +223,14 @@ function Tilemap () {
             TileScale.Sixteen
         ))
 }
-function music2 () {
-    music.playMelody("D C E D G C D C ", 350)
+function banana_hit () {
+    info.changeScoreBy(1)
+    kanye.destroy(effects.spray, 100)
+    pause(100)
+    game.over(true, effects.confetti)
+}
+function splash () {
+    game.splash("Rap battle kanye, or find another way to eliminate him")
 }
 function Kanye2 () {
     kanye = sprites.create(img`
@@ -231,7 +241,7 @@ function Kanye2 () {
 . . . . . e e e e e e . . . . . 
 . . . . . e e f f e e . . . . . 
 . . . . . . e e e e . . . . . . 
-. . . e 1 5 e e e e 5 1 e . . . 
+. . . e 1 5 1 e e 1 5 1 e . . . 
 . . . e 1 1 5 1 1 5 1 1 e . . . 
 . . . e . 1 1 5 5 1 1 . e . . . 
 . . . e . 1 1 1 1 1 1 . e . . . 
@@ -242,6 +252,7 @@ function Kanye2 () {
 . . . . 1 1 . . . . 1 1 . . . . 
 `, SpriteKind.Player)
     kanye.setPosition(90, 55)
+    // makes kanye his own type of object
     kanye.setKind(SpriteKind.Kanye)
 }
 sprites.onOverlap(SpriteKind.Kanye, SpriteKind.Player, function (sprite, otherSprite) {
@@ -255,11 +266,13 @@ function lose () {
 function Interact () {
     // Makes hero says something
     Rapper.say("I'll let you go first", 2000)
+    // Creates a pause
     pause(2000)
     kanye.say("Wrong choice", 2000)
     pause(2000)
     kanye.say("Poopity scoop", 2000)
     pause(2000)
+    // ends game
     info.changeLifeBy(-1)
 }
 function walls () {
@@ -306,14 +319,45 @@ function walls () {
     tiles.setWallAt(tiles.getTileLocation(4, 4), true)
     tiles.setWallAt(tiles.getTileLocation(5, 4), true)
 }
-function banana () {
-	
+// makes it so that the banana can be thrown
+controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
+    banana()
+})
+function music2 () {
+    music.playMelody("D C E D G C D C ", 350)
 }
+function banana () {
+    // makes a projectile
+    projectile = sprites.createProjectileFromSprite(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . 5 5 5 5 . . . . . . 
+. . . . . . 5 5 5 5 . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, Rapper, 100, 0)
+}
+sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Kanye, function (sprite, otherSprite) {
+    banana_hit()
+})
+let projectile: Sprite = null
 let kanye: Sprite = null
 let Rapper: Sprite = null
 Tilemap()
 walls()
 Rapper1()
+Kanye2()
+splash()
 forever(function () {
     music2()
 })
