@@ -223,15 +223,6 @@ function Tilemap () {
             TileScale.Sixteen
         ))
 }
-function banana_hit () {
-    info.changeScoreBy(1)
-    kanye.destroy(effects.spray, 100)
-    pause(100)
-    game.over(true, effects.confetti)
-}
-function splash () {
-    game.splash("Rap battle kanye, or find another way to eliminate him")
-}
 function Kanye2 () {
     kanye = sprites.create(img`
 . . . . . . . . . . . . . . . . 
@@ -274,6 +265,27 @@ function Interact () {
     pause(2000)
     // ends game
     info.changeLifeBy(-1)
+}
+function banana2 () {
+    // makes a projectile
+    projectile = sprites.createProjectileFromSprite(img`
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . 5 5 5 5 . . . . . . 
+. . . . . . 5 5 5 5 . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+. . . . . . . . . . . . . . . . 
+`, Rapper, 100, 0)
 }
 function walls () {
     // adds wall
@@ -321,31 +333,20 @@ function walls () {
 }
 // makes it so that the banana can be thrown
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
-    banana()
+    banana2()
 })
 function music2 () {
     music.playMelody("D C E D G C D C ", 350)
+    music.playMelody("F E G - - - - - ", 350)
 }
-function banana () {
-    // makes a projectile
-    projectile = sprites.createProjectileFromSprite(img`
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . 5 5 5 5 . . . . . . 
-. . . . . . 5 5 5 5 . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-. . . . . . . . . . . . . . . . 
-`, Rapper, 100, 0)
+function splash () {
+    game.splash("Rap battle kanye, or find another way to eliminate him")
+}
+function banana_hit () {
+    info.changeScoreBy(1)
+    kanye.destroy(effects.spray, 100)
+    pause(100)
+    game.over(true, effects.confetti)
 }
 sprites.onOverlap(SpriteKind.Projectile, SpriteKind.Kanye, function (sprite, otherSprite) {
     banana_hit()
